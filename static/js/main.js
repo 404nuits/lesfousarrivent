@@ -1,8 +1,11 @@
 import { SceneManager } from './SceneManager.js';
+import { Ecran } from './ecran.js';
 
 const canvas = document.getElementById("canvas");
 
 const sceneManager = new SceneManager(canvas);
+
+const ecran = new Ecran();
 
 bindEventListeners();
 render();

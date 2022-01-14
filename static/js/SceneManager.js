@@ -1,15 +1,10 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.module.js';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
 
-import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/postprocessing/RenderPass.js';
-import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/postprocessing/EffectComposer.js';
-import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/postprocessing/UnrealBloomPass.js';
-
-import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/postprocessing/ShaderPass.js';
-import { FXAAShader } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/shaders/FXAAShader.js';
-
 import { GeneralLights } from './sceneSubjects/GeneralLights.js';
 import { Computer } from './sceneSubjects/Computer.js';
+import { Environment } from './sceneSubjects/Environment.js';
+import { Ecran } from './sceneSubjects/Ecran.js';
 
 export class SceneManager {
     constructor(canvas) {
@@ -28,13 +23,20 @@ export class SceneManager {
 
         const sceneSubjects = createSceneSubjects(scene);
 
+        showHelpers();
+
         init();
+
 
         function init() {
 
-            camera.position.set( 0, 20, 50 );
-            controls.update();
+            camera.position.set( 0, 60, 60 );
 
+            camera.lookAt(0,20,0);
+
+            controls.target.set(0,20,0);
+            controls.update();
+            renderer.render(scene, camera);
 
         }
 
@@ -51,6 +53,7 @@ export class SceneManager {
             renderer.setPixelRatio(DPR);
             renderer.setSize(width, height);
             renderer.setClearColor(0x000000,0.0);
+            renderer.outputEncoding = THREE.sRGBEncoding;
 
             return renderer;
         }
@@ -70,6 +73,8 @@ export class SceneManager {
             const sceneSubjects = [
                 new GeneralLights(scene),
                 new Computer(scene),
+                new Environment(scene, renderer),
+                new Ecran(scene)
             ];
 
             return sceneSubjects;
@@ -96,7 +101,6 @@ export class SceneManager {
             }
 
             controls.update();
-
 
             renderer.render(scene, camera);
 

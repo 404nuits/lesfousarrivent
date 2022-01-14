@@ -13,3 +13,7 @@ html, body {
 #canvas {
     z-index: 0;
 }
+
+#ecran {
+    display: none;
+}
